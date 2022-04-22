@@ -1,5 +1,7 @@
 extends Node2D
 
+const WALKERS_STEPS = 200
+
 var borders = Rect2(1,1, 38, 21)
 
 onready var tileMap = $TileMap
@@ -10,7 +12,7 @@ func _ready():
 
 func generate_level():
 	var walker = Walker.new(Vector2(19,11), borders)
-	var map = walker.walk(500)
+	var map = walker.walk(WALKERS_STEPS)
 	walker.queue_free()
 	for location in map:
 		tileMap.set_cellv(location, -1)
