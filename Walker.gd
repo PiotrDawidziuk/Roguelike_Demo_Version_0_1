@@ -2,7 +2,7 @@ extends Node
 
 class_name Walker
 
-const DIRECTIONS = [Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.RIGHT]
+const DIRECTIONS = [Vector2.RIGHT, Vector2.UP, Vector2.LEFT, Vector2.DOWN]
 
 var position = Vector2.ZERO
 var direction = Vector2.RIGHT
@@ -17,7 +17,15 @@ func _init(starting_position, new_borders):
 	borders = new_borders
 
 func walk(steps):
-	pass
+	for step in steps:
+		if randf() <= 0.25 or steps_since_last_turn >= 4:
+			change_direction()
+		
+		if step():
+			step_history.append(position)
+		else:
+			change_direction()
+	return step_history
 	
 func step():
 	var target_position = position + direction
@@ -31,7 +39,7 @@ func step():
 	
 func change_direction():
 	steps_since_last_turn = 0
-	var directions = DIRECTIONS
+	var directions = DIRECTIONS.duplicate()
 	directions.erase(direction)
 	directions.shuffle()
 	direction = directions.pop_front()
