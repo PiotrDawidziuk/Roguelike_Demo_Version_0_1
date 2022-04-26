@@ -50,7 +50,7 @@ func generate_level():
 	
 	cell_sample = tileMap.get_cell(2,2)
 	# test_label.text = String(cell_sample)
-	test_label.text = "Example Text"
+	test_label.text = "Welcome Adventurer!"
 
 func _input(event):
 	if event.is_action_pressed("ui_left"):
