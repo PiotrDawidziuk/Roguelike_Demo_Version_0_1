@@ -24,6 +24,10 @@ config/name="Roguelike_Demo_Version_0_1"
 run/main_scene="res://Scenes/Game.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+MapClasses="*res://Map_Classes.gd"
+
 [display]
 
 window/size/width=1280
