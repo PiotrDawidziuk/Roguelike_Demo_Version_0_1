@@ -3,6 +3,7 @@ extends Node2D
 
 const Player = preload("res://Scenes/hero.tscn")
 const Secret = preload("res://Scenes/secret.tscn")
+const Exit = preload("res://Scenes/level_exit.tscn")
 const WALKERS_STEPS = 200
 
 #TEST VARIABLES
@@ -11,6 +12,7 @@ onready var test_label = $Label
 var cell_table = []
 var cell_dict = {}
 var secret = Secret.instance()
+var exit = Exit.instance()
 
 var borders = Rect2(1,1, 38, 21)
 
@@ -42,6 +44,10 @@ func generate_level():
 	add_child(secret)
 	secret.position = cell_table[30].position*32
 	
+	add_child(exit)
+	#exit.position = cell_table[40].position*32
+	exit.position = walker.get_end_room().position*32
+	
 	tileMap.set_cellv(Vector2(1,1), -1)
 	
 	cell_sample = MapClasses.MapCellProperties.new()
@@ -52,7 +58,12 @@ func generate_level():
 	# test_label.text = String(cell_sample)
 	test_label.text = "Welcome Adventurer!"
 
+func reaload_level():
+	get_tree().reload_current_scene()
+
 func _input(event):
+	if event.is_action_pressed("ui_accept"):
+		reaload_level()
 	if event.is_action_pressed("ui_left"):
 		if cell_dict.has(Vector2((player.position.x / 32) -1, player.position.y / 32)):
 			var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
@@ -79,4 +90,6 @@ func meeting(position):
 	if secret != null && position == secret.position:
 		test_label.text = "You found something!"
 		secret.queue_free()
-		
+	if exit != null && position == exit.position:
+		test_label.text = "You exit level!"
+		reaload_level()
