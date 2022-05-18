@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=4 format=2]
 
 [ext_resource path="res://hero.png" type="Texture" id=1]
 [ext_resource path="res://Scenes/hero.gd" type="Script" id=2]
+[ext_resource path="res://Scenes/Label.tscn" type="PackedScene" id=3]
 
 [node name="hero" type="Node2D"]
 script = ExtResource( 2 )
@@ -12,3 +13,16 @@ offset = Vector2( 16, 16 )
 
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
+
+[node name="Label" parent="." instance=ExtResource( 3 )]
+margin_left = -154.126
+margin_top = -82.9261
+margin_right = 165.874
+margin_bottom = -50.9261
+
+[node name="PointsLabel" parent="." instance=ExtResource( 3 )]
+margin_left = -156.748
+margin_top = 76.6436
+margin_right = 163.252
+margin_bottom = 108.644
+text = "Points: 0"
