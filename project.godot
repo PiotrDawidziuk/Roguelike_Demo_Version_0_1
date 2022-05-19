@@ -27,6 +27,7 @@ config/icon="res://icon.png"
 [autoload]
 
 MapClasses="*res://Map_Classes.gd"
+Globals="*res://Globals.gd"
 
 [display]
 

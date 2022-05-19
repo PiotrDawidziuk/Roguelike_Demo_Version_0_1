@@ -17,7 +17,7 @@ var exit = Exit.instance()
 
 #variables of things player has etc:
 var hasKey = false
-var points = 0
+#var points = Globals.points
 
 var borders = Rect2(1,1, 38, 21)
 
@@ -67,6 +67,7 @@ func generate_level():
 	cell_sample = tileMap.get_cell(2,2)
 	# message_box.text = String(cell_sample)
 	message_box.text = "Welcome Adventurer!"
+	points_label.text = "Points: " + String(Globals.points)
 
 func reaload_level():
 	get_tree().reload_current_scene()
@@ -99,8 +100,8 @@ func _input(event):
 func meeting(position):
 	if secret != null && position == secret.position:
 		message_box.text = "You found something!"
-		points = points + 1
-		points_label.text = "Points: " + String(points)
+		Globals.points = Globals.points + 1
+		points_label.text = "Points: " + String(Globals.points)
 		secret.queue_free()
 	if key != null && position == key.position:
 		message_box.text = "You found a key!"
