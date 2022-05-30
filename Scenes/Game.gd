@@ -26,6 +26,7 @@ onready var tileMap = $TileMap
 onready var player = $hero
 onready var message_box = $hero/Label
 onready var points_label = $hero/PointsLabel
+onready var gold_label = $hero/GoldLabel
 onready var key = $key
 
 
@@ -51,6 +52,10 @@ func generate_level():
 
 	add_child(secret)
 	secret.position = cell_table[30].position*32
+	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].searched_description = 'You found 100 gold pieces'
+	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].gold = 100
+	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].isEmpty = false
+	
 	
 	add_child(exit)
 	#exit.position = cell_table[40].position*32
@@ -96,6 +101,11 @@ func _input(event):
 			message_box.text = "You went South from" + test_text_1
 			player.position = Vector2(player.position.x, player.position.y + 32)
 	meeting(player.position)
+	if event.is_action_pressed("search"):
+		search(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)])
+		#message_box.text = "Search clicked"
+		
+	
 
 func meeting(position):
 	if secret != null && position == secret.position:
@@ -112,4 +122,9 @@ func meeting(position):
 			reaload_level()
 		else:
 			message_box.text = "The exit is locked!"
-		
+func search(cell):
+	message_box.text = cell.searched_description
+	if (!cell.isEmpty):
+		if (cell.gold != 0):
+			Globals.gold += cell.gold
+			gold_label.text = "Gold: " + String(Globals.gold)

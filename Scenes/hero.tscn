@@ -26,3 +26,10 @@ margin_top = 76.6436
 margin_right = 163.252
 margin_bottom = 108.644
 text = "Points: 0"
+
+[node name="GoldLabel" parent="." instance=ExtResource( 3 )]
+margin_left = 42.1391
+margin_top = 76.7492
+margin_right = 135.139
+margin_bottom = 108.749
+text = "Gold: 0"
