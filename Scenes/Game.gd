@@ -73,6 +73,7 @@ func generate_level():
 	# message_box.text = String(cell_sample)
 	message_box.text = "Welcome Adventurer!"
 	points_label.text = "Points: " + String(Globals.points)
+	gold_label.text = "Gold: " + String(Globals.gold)
 
 func reaload_level():
 	get_tree().reload_current_scene()
@@ -124,7 +125,11 @@ func meeting(position):
 			message_box.text = "The exit is locked!"
 func search(cell):
 	message_box.text = cell.searched_description
+	cell.searched_description = "You searched this cell already"
 	if (!cell.isEmpty):
 		if (cell.gold != 0):
 			Globals.gold += cell.gold
 			gold_label.text = "Gold: " + String(Globals.gold)
+			cell.isEmpty = true
+			cell.gold = 0
+
