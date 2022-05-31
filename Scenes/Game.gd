@@ -4,6 +4,7 @@ extends Node2D
 #const Player = preload("res://Scenes/hero.tscn")
 const Secret = preload("res://Scenes/secret.tscn")
 const Exit = preload("res://Scenes/level_exit.tscn")
+const Kobold = preload("res://Scenes/kobold.tscn")
 const WALKERS_STEPS = 200
 
 #TEST VARIABLES
@@ -14,6 +15,7 @@ var cell_table = []
 var cell_dict = {}
 var secret = Secret.instance()
 var exit = Exit.instance()
+var kobold = Kobold.instance()
 
 #variables of things player has etc:
 var hasKey = false
@@ -27,6 +29,10 @@ onready var player = $hero
 onready var message_box = $hero/Label
 onready var points_label = $hero/PointsLabel
 onready var gold_label = $hero/GoldLabel
+onready var dialog_box = $hero/DialogBox
+onready var dialog_text = $hero/DialogBox/DialogLabel
+
+
 onready var key = $key
 
 
@@ -50,12 +56,18 @@ func generate_level():
 		cell_dict[new_cell.position] = new_cell
 		
 
+	# Add things:
+	
 	add_child(secret)
 	secret.position = cell_table[30].position*32
 	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].searched_description = 'You found 100 gold pieces'
 	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].gold = 100
 	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].isEmpty = false
 	
+	add_child(kobold)
+	kobold.position = cell_table[32].position*32
+	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].searched_description = 'You found kobold poop'
+	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].isEmpty = false
 	
 	add_child(exit)
 	#exit.position = cell_table[40].position*32
@@ -71,7 +83,10 @@ func generate_level():
 	
 	cell_sample = tileMap.get_cell(2,2)
 	# message_box.text = String(cell_sample)
-	message_box.text = "Welcome Adventurer!"
+	if(Globals.levelNumber == 1):
+		message_box.text = "Welcome Adventurer!"
+	else:
+		message_box.text = "You are now in level " + String(Globals.levelNumber)
 	points_label.text = "Points: " + String(Globals.points)
 	gold_label.text = "Gold: " + String(Globals.gold)
 
@@ -79,33 +94,35 @@ func reaload_level():
 	get_tree().reload_current_scene()
 
 func _input(event):
-	if event.is_action_pressed("ui_accept"):
-		reaload_level()
-	if event.is_action_pressed("ui_left"):
-		if cell_dict.has(Vector2((player.position.x / 32) -1, player.position.y / 32)):
-			var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
-			message_box.text = "You went West from " + test_text_1
-			player.position = Vector2(player.position.x -32, player.position.y)
-	if event.is_action_pressed("ui_right"):
-		if cell_dict.has(Vector2((player.position.x / 32) +1, player.position.y / 32)):
-			var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
-			message_box.text = "You went East from " + test_text_1
-			player.position = Vector2(player.position.x +32, player.position.y)
-	if event.is_action_pressed("ui_up"):
-		if cell_dict.has(Vector2(player.position.x / 32, (player.position.y / 32)-1)):
-			var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
-			message_box.text = "You went North from " + test_text_1
-			player.position = Vector2(player.position.x, player.position.y - 32)
-	if event.is_action_pressed("ui_down"):
-		if cell_dict.has(Vector2(player.position.x / 32, (player.position.y / 32)+1)):
-			var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
-			message_box.text = "You went South from" + test_text_1
-			player.position = Vector2(player.position.x, player.position.y + 32)
-	meeting(player.position)
-	if event.is_action_pressed("search"):
-		search(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)])
+	if(Globals.state == 1):
+		if event.is_action_pressed("ui_accept"):
+			reaload_level()
+		if event.is_action_pressed("ui_left"):
+			if cell_dict.has(Vector2((player.position.x / 32) -1, player.position.y / 32)):
+				var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
+				message_box.text = "You went West from " + test_text_1
+				player.position = Vector2(player.position.x -32, player.position.y)
+		if event.is_action_pressed("ui_right"):
+			if cell_dict.has(Vector2((player.position.x / 32) +1, player.position.y / 32)):
+				var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
+				message_box.text = "You went East from " + test_text_1
+				player.position = Vector2(player.position.x +32, player.position.y)
+		if event.is_action_pressed("ui_up"):
+			if cell_dict.has(Vector2(player.position.x / 32, (player.position.y / 32)-1)):
+				var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
+				message_box.text = "You went North from " + test_text_1
+				player.position = Vector2(player.position.x, player.position.y - 32)
+		if event.is_action_pressed("ui_down"):
+			if cell_dict.has(Vector2(player.position.x / 32, (player.position.y / 32)+1)):
+				var test_text_1 = String(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)].position) 
+				message_box.text = "You went South from" + test_text_1
+				player.position = Vector2(player.position.x, player.position.y + 32)
+		meeting(player.position)
+		if event.is_action_pressed("search"):
+			search(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)])
 		#message_box.text = "Search clicked"
-		
+	if(Globals.state == 2):
+		pass
 	
 
 func meeting(position):
@@ -120,6 +137,7 @@ func meeting(position):
 		key.queue_free()	
 	if exit != null && position == exit.position:
 		if (hasKey):
+			Globals.levelNumber += 1
 			reaload_level()
 		else:
 			message_box.text = "The exit is locked!"

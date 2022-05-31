@@ -8,6 +8,7 @@
 script = ExtResource( 2 )
 
 [node name="hero_sprite" type="Sprite" parent="."]
+z_index = 2
 texture = ExtResource( 1 )
 offset = Vector2( 16, 16 )
 
@@ -19,6 +20,7 @@ margin_left = -154.126
 margin_top = -82.9261
 margin_right = 165.874
 margin_bottom = -50.9261
+text = "Example label here"
 
 [node name="PointsLabel" parent="." instance=ExtResource( 3 )]
 margin_left = -156.748
@@ -33,3 +35,22 @@ margin_top = 76.7492
 margin_right = 135.139
 margin_bottom = 108.749
 text = "Gold: 0"
+
+[node name="DialogBox" type="ColorRect" parent="."]
+visible = false
+margin_left = -123.0
+margin_top = -47.0
+margin_right = 118.0
+margin_bottom = 64.0
+color = Color( 0, 0, 0, 1 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="DialogLabel" parent="DialogBox" instance=ExtResource( 3 )]
+margin_left = 2.0
+margin_top = 5.0
+margin_right = 234.0
+margin_bottom = 107.0
+text = "Example dialog aaaa  aaaaaa aaaa"
+autowrap = true
