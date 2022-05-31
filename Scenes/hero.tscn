@@ -36,21 +36,24 @@ margin_right = 135.139
 margin_bottom = 108.749
 text = "Gold: 0"
 
-[node name="DialogBox" type="ColorRect" parent="."]
+[node name="DialogBox" type="Node2D" parent="."]
 visible = false
-margin_left = -123.0
-margin_top = -47.0
-margin_right = 118.0
-margin_bottom = 64.0
+z_index = 5
+
+[node name="DialogRect" type="ColorRect" parent="DialogBox"]
+margin_left = -126.0
+margin_top = -59.0
+margin_right = 132.0
+margin_bottom = 65.0
 color = Color( 0, 0, 0, 1 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
-[node name="DialogLabel" parent="DialogBox" instance=ExtResource( 3 )]
-margin_left = 2.0
+[node name="DialogLabel" parent="DialogBox/DialogRect" instance=ExtResource( 3 )]
+margin_left = 2.74916
 margin_top = 5.0
-margin_right = 234.0
+margin_right = 234.749
 margin_bottom = 107.0
 text = "Example dialog aaaa  aaaaaa aaaa"
 autowrap = true

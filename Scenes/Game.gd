@@ -13,6 +13,7 @@ var cell_sample # not needed
 #needed variables
 var cell_table = []
 var cell_dict = {}
+var npc_dict = {}
 var secret = Secret.instance()
 var exit = Exit.instance()
 var kobold = Kobold.instance()
@@ -30,7 +31,7 @@ onready var message_box = $hero/Label
 onready var points_label = $hero/PointsLabel
 onready var gold_label = $hero/GoldLabel
 onready var dialog_box = $hero/DialogBox
-onready var dialog_text = $hero/DialogBox/DialogLabel
+onready var dialog_text = $hero/DialogBox/DialogRect/DialogLabel
 
 
 onready var key = $key
@@ -56,6 +57,8 @@ func generate_level():
 		cell_dict[new_cell.position] = new_cell
 		
 
+	# NPCs list
+	
 	# Add things:
 	
 	add_child(secret)
@@ -65,9 +68,12 @@ func generate_level():
 	cell_dict[Vector2(secret.position.x / 32, secret.position.y / 32)].isEmpty = false
 	
 	add_child(kobold)
-	kobold.position = cell_table[32].position*32
+	kobold.position = cell_table[33].position*32
 	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].searched_description = 'You found kobold poop'
 	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].isEmpty = false
+	var koboldNPC =  Npc.NPC.new()
+	koboldNPC.greeting = "Hello, I am Bobold the kobold"
+	npc_dict[kobold.position] = koboldNPC
 	
 	add_child(exit)
 	#exit.position = cell_table[40].position*32
@@ -121,8 +127,13 @@ func _input(event):
 		if event.is_action_pressed("search"):
 			search(cell_dict[Vector2(player.position.x / 32, player.position.y / 32)])
 		#message_box.text = "Search clicked"
+		if event.is_action_pressed("talk"):
+			Globals.state = 2
+			dialog(npc_dict[player.position])
 	if(Globals.state == 2):
-		pass
+		if event.is_action_pressed("dialog_next"):
+			Globals.state = 1
+			dialog_box.hide()
 	
 
 func meeting(position):
@@ -135,6 +146,11 @@ func meeting(position):
 		message_box.text = "You found a key!"
 		hasKey = true
 		key.queue_free()	
+	if kobold != null && position == kobold.position:
+			message_box.text = "You meet Bobold the Kobold"
+			if npc_dict[player.position].firstMeeting == false:
+				npc_dict[player.position].greeting = "We meet again!"
+
 	if exit != null && position == exit.position:
 		if (hasKey):
 			Globals.levelNumber += 1
@@ -150,4 +166,10 @@ func search(cell):
 			gold_label.text = "Gold: " + String(Globals.gold)
 			cell.isEmpty = true
 			cell.gold = 0
+func dialog(npc):
+	dialog_text.text = npc.greeting
+	dialog_box.show()
+	npc_dict[player.position].firstMeeting = false
+	
+	
 
