@@ -147,7 +147,8 @@ func meeting(position):
 		hasKey = true
 		key.queue_free()	
 	if kobold != null && position == kobold.position:
-			message_box.text = "You meet Bobold the Kobold"
+			if npc_dict[player.position].firstMeeting == true:
+				message_box.text = "You meet Bobold the Kobold"
 			if npc_dict[player.position].firstMeeting == false:
 				npc_dict[player.position].greeting = "We meet again!"
 
