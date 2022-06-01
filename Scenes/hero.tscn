@@ -51,9 +51,17 @@ __meta__ = {
 }
 
 [node name="DialogLabel" parent="DialogBox/DialogRect" instance=ExtResource( 3 )]
-margin_left = 2.74916
-margin_top = 5.0
-margin_right = 234.749
-margin_bottom = 107.0
+margin_left = 4.12373
+margin_top = 3.87627
+margin_right = 254.124
+margin_bottom = 101.876
 text = "Example dialog aaaa  aaaaaa aaaa"
+autowrap = true
+
+[node name="DialogNextLabel" parent="DialogBox/DialogRect" instance=ExtResource( 3 )]
+margin_left = 3.50508
+margin_top = 110.578
+margin_right = 65.5051
+margin_bottom = 123.578
+text = "(N)ext"
 autowrap = true
