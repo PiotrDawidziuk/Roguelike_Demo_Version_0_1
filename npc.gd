@@ -5,3 +5,9 @@ class NPC:
 	var firstMeeting = true
 	var greeting = "Hello"
 	var dialogPanelsNumber = 1
+	var dialog
+
+class dialog:
+	var dialogPagesNumber = 1
+	var dialogText = []
+	
