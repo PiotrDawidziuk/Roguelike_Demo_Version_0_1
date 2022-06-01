@@ -8,7 +8,7 @@ var gold = 0
 var state = 1
 
 # dialog state
-var dialogLeft = 1
+var dialogPane = 0
 
 func _ready():
 	pass # Replace with function body.

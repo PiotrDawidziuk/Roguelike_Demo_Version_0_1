@@ -7,7 +7,7 @@ class NPC:
 	var dialogPanelsNumber = 1
 	var dialog
 
-class dialog:
+class Dialog:
 	var dialogPagesNumber = 1
-	var dialogText = []
+	var dialogText = {}
 	

@@ -72,7 +72,11 @@ func generate_level():
 	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].searched_description = 'You found kobold poop'
 	cell_dict[Vector2(kobold.position.x / 32, kobold.position.y / 32)].isEmpty = false
 	var koboldNPC =  Npc.NPC.new()
-	koboldNPC.greeting = "Hello, I am Bobold the kobold"
+	koboldNPC.greeting = "Hello, I am Bobold the Kobold"
+	koboldNPC.dialog = Npc.Dialog.new()
+	koboldNPC.dialog.dialogPagesNumber = 2
+	koboldNPC.dialog.dialogText[0] = "Hello, I am Bobold The Kobold"
+	koboldNPC.dialog.dialogText[1] = "It would be really nice if I had some mushrooms"
 	npc_dict[kobold.position] = koboldNPC
 	
 	add_child(exit)
@@ -132,8 +136,12 @@ func _input(event):
 			dialog(npc_dict[player.position])
 	if(Globals.state == 2):
 		if event.is_action_pressed("dialog_next"):
-			Globals.state = 1
-			dialog_box.hide()
+			if (Globals.dialogPane >= npc_dict[player.position].dialog.dialogPagesNumber):
+				Globals.state = 1
+				Globals.dialogPane = 0
+				dialog_box.hide()
+			else: 
+				dialog(npc_dict[player.position])
 	
 
 func meeting(position):
@@ -168,8 +176,11 @@ func search(cell):
 			cell.isEmpty = true
 			cell.gold = 0
 func dialog(npc):
-	dialog_text.text = npc.greeting
+	
+	dialog_text.text = npc.dialog.dialogText[Globals.dialogPane]
+
 	dialog_box.show()
+	Globals.dialogPane = Globals.dialogPane + 1
 	npc_dict[player.position].firstMeeting = false
 	
 	
