@@ -49,10 +49,10 @@ func generate_level():
 	player.position = initial_position
 	walker.queue_free()
 	for location in map:
-		tileMap.set_cellv(location, 0)
+		tileMap.set_cellv(location, 2)
 		var new_cell = MapClasses.MapCellProperties.new()
 		new_cell.position = location
-		new_cell.tile_type = 0
+		new_cell.tile_type = 2
 		cell_table.append(new_cell)
 		cell_dict[new_cell.position] = new_cell
 		
@@ -157,6 +157,7 @@ func meeting(position):
 	if kobold != null && position == kobold.position:
 			if npc_dict[player.position].firstMeeting == true:
 				message_box.text = "You meet Bobold the Kobold"
+				npc_dict[player.position].firstMeeting = false # Think about this later
 			if npc_dict[player.position].firstMeeting == false:
 				npc_dict[player.position].greeting = "We meet again!"
 
