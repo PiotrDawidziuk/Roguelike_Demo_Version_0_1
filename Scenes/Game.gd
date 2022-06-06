@@ -17,6 +17,7 @@ var npc_dict = {}
 var secret = Secret.instance()
 var exit = Exit.instance()
 var kobold = Kobold.instance()
+var rng = RandomNumberGenerator.new()
 
 #variables of things player has etc:
 var hasKey = false
@@ -49,7 +50,17 @@ func generate_level():
 	player.position = initial_position
 	walker.queue_free()
 	for location in map:
-		tileMap.set_cellv(location, 2)
+		var tileRand = rng.randi_range(1,100)
+		if (tileRand < 80):
+			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(0,0))
+		elif (tileRand >= 80 && tileRand <= 85):
+			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(1,0))
+		elif (tileRand >= 85 && tileRand <= 90):
+			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(2,0))
+		elif (tileRand >= 95 && tileRand <= 97):
+			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(3,0))
+		else:
+			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(4,0))
 		var new_cell = MapClasses.MapCellProperties.new()
 		new_cell.position = location
 		new_cell.tile_type = 2
