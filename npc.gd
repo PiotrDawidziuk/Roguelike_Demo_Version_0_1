@@ -6,6 +6,7 @@ class NPC:
 	var greeting = "Hello"
 	var dialogPanelsNumber = 1
 	var dialog
+	var instance
 
 class Dialog:
 	var dialogPagesNumber = 1
