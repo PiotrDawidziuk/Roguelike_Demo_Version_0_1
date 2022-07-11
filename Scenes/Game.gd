@@ -11,6 +11,7 @@ const WALKERS_STEPS = 200
 var cell_sample # not needed
 
 #needed variables
+var used_cells = []
 var cell_table = []
 var cell_dict = {}
 var npc_dict = {}
@@ -43,6 +44,29 @@ func _ready():
 	generate_level()
 
 func generate_level():
+	used_cells = tileMap.get_used_cells()
+	for cell in used_cells:
+		var tileRand = rng.randi_range(1,100)
+		if (tileRand < 16):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(0,0))
+		elif (tileRand >= 16 && tileRand <= 32):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(1,0))
+		elif (tileRand >= 32 && tileRand <= 48):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(2,0))
+		elif (tileRand >= 48 && tileRand <= 64):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(3,0))
+		elif (tileRand >= 64 && tileRand <= 80):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(4,0))
+		elif (tileRand >= 80 && tileRand <= 84):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(0,1))
+		elif (tileRand >= 84 && tileRand <= 88):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(1,1))
+		elif (tileRand >= 88 && tileRand <= 96):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(2,1))
+		elif (tileRand >= 96 && tileRand <= 98):
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(3,1))
+		else:
+			tileMap.set_cell(cell.x, cell.y, 3, false, false, false, Vector2(4,1))
 	var walker = Walker.new(Vector2(19,11), borders)
 	var map = walker.walk(WALKERS_STEPS)
 	#add_child(player)
@@ -61,12 +85,16 @@ func generate_level():
 			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(3,0))
 		else:
 			tileMap.set_cell(location.x, location.y, 2, false, false, false, Vector2(4,0))
+		
+		# adds cell to cell table 
 		var new_cell = MapClasses.MapCellProperties.new()
 		new_cell.position = location
 		new_cell.tile_type = 2
 		cell_table.append(new_cell)
 		cell_dict[new_cell.position] = new_cell
-		
+	used_cells = tileMap.get_used_cells()
+	for cell in used_cells:
+		find_wall(cell)
 
 	# NPCs list
 	
@@ -95,8 +123,6 @@ func generate_level():
 	exit.position = walker.get_end_room().position*32
 	
 	key.position = cell_table[20].position*32
-	
-	tileMap.set_cellv(Vector2(1,1), -1)
 	
 	cell_sample = MapClasses.MapCellProperties.new()
 		
@@ -195,5 +221,16 @@ func dialog(npc):
 	Globals.dialogPane = Globals.dialogPane + 1
 	npc_dict[player.position].firstMeeting = false
 	
-	
-
+func find_wall(cell_location):
+	var isWall = false
+	var cell_index = tileMap.get_cell(cell_location.x, cell_location.y) 
+	if (cell_index == 3 && (tileMap.get_cell(cell_location.x + 1, cell_location.y) == 2 ||
+	tileMap.get_cell(cell_location.x, cell_location.y + 1) == 2 ||
+	tileMap.get_cell(cell_location.x +1, cell_location.y + 1) == 2 ||
+	tileMap.get_cell(cell_location.x -1, cell_location.y) == 2 ||
+	tileMap.get_cell(cell_location.x, cell_location.y - 1) == 2 ||
+	tileMap.get_cell(cell_location.x  -1, cell_location.y - 1) == 2 ||
+	tileMap.get_cell(cell_location.x  +1, cell_location.y - 1) == 2 ||
+	tileMap.get_cell(cell_location.x  -1, cell_location.y + 1) == 2)):
+		tileMap.set_cell(cell_location.x, cell_location.y, 4)
+		

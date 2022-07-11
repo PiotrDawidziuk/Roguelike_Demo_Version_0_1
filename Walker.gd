@@ -12,6 +12,7 @@ var step_history = []
 var steps_since_last_turn = 0
 var rooms = []
 
+
 func _init(starting_position, new_borders):
 	assert(new_borders.has_point(starting_position))
 	position = starting_position
