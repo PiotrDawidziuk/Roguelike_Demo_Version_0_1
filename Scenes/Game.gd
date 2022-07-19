@@ -186,10 +186,12 @@ func meeting(position):
 		message_box.text = "You found something!"
 		Globals.points = Globals.points + 1
 		points_label.text = "Points: " + String(Globals.points)
+		yield(get_tree().create_timer(0.0001), "timeout")
 		secret.queue_free()
 	if key != null && position == key.position:
 		message_box.text = "You found a key!"
 		hasKey = true
+		yield(get_tree().create_timer(0.0001), "timeout")
 		key.queue_free()	
 	if kobold != null && position == kobold.position:
 			if npc_dict[player.position].firstMeeting == true:
